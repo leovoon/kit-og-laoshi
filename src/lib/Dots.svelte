@@ -5,7 +5,7 @@
 	export let count = 100;
 	export let width = 750;
 	export let height = 393;
-	export let message = '温老师';
+	export let message = '你今天分享了吗？';
 	export let satori = false;
 
 	const rng = seedrandom(message);
@@ -49,21 +49,13 @@
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" class:grid={!satori}>
 			{#each points as { x, y, color, size }}
 				<circle cx={x} cy={y} r={size} fill={color} />
-				<!-- <polygon
-					points={`${x - size},${y + size} ${x + size},${y + size} ${x},${y - size}`}
-					fill={color}
-				/> -->
-				<!-- <polygon
-					points={`${x},${y - size} ${x + size},${y} ${x},${y + size} ${x - size},${y}`}
-					fill={color}
-				/> -->
 			{/each}
 		</svg>
 		<p
 			class="message"
 			style:transform={satori ? `translateX(${width / 2}px) translateX(-50%);` : undefined}
 			style:position={satori ? 'absolute' : undefined}
-			style:font-size={satori ? '50px' : 'min(5vw, 50px)'}
+			style:font-size={satori ? '100px' : 'min(5vw, 50px)'}
 			class:grid={!satori}
 		>
 			{message}
