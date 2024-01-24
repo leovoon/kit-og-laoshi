@@ -55,7 +55,7 @@
 			class="message"
 			style:transform={satori ? `translateX(${width / 2}px) translateX(-50%);` : undefined}
 			style:position={satori ? 'absolute' : undefined}
-			style:font-size={satori ? '100px' : 'min(5vw, 50px)'}
+			style:font-size={satori ? '50px' : 'min(5vw, 50px)'}
 			class:grid={!satori}
 		>
 			{message}
