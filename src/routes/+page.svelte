@@ -62,6 +62,13 @@
 		}}>分享</button
 	>
 </p>
+{#if $page.url.searchParams.has('message')}
+	<p style="text-align: center; font-size: 1.5rem; margin-top: 1rem;">
+		<a href={shareUrl} download="laoshi-share.png">
+			<button> 保存图片 </button>
+		</a>
+	</p>
+{/if}
 <a href={shareUrl} download="laoshi-share.png">
 	<button> 保存图片 </button>
 </a>
