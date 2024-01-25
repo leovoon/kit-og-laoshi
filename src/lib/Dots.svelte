@@ -57,7 +57,7 @@
 			style:position={satori ? 'absolute' : undefined}
 			style:font-size={satori ? '50px' : 'min(5vw, 50px)'}
 			class:grid={!satori}
-			style:word-break={'normal'}
+			style:width={satori ? '100%' : undefined}
 			style:padding={satori ? '0.4em' : 'clamp(0.4em, 2vw, 1em)'}
 		>
 			{message}
@@ -81,9 +81,10 @@
 		color: white;
 		min-width: 100px;
 		text-align: center;
-		max-width: 80%;
-		line-height: 1.5;
+		max-width: 90%;
+		line-height: 1.2;
 	}
+
 	.signature {
 		z-index: 1;
 		align-self: center;

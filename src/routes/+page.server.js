@@ -7,7 +7,7 @@ export const load = ({ url }) => {
 
 	if (!message) {
 		return {
-			message: '你今天分享了吗？你今天分享了吗？你今天分享了吗？你今天分享了吗？你今天分享了吗？'
+			message: '你今天分享了吗？'
 		};
 	}
 
