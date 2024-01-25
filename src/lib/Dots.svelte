@@ -57,8 +57,8 @@
 			style:position={satori ? 'absolute' : undefined}
 			style:font-size={satori ? '50px' : 'min(5vw, 50px)'}
 			class:grid={!satori}
-			style:word-break={satori ? 'keep-all' : undefined}
-			style:height={satori ? 'auto' : undefined}
+			style:word-break={'normal'}
+			style:padding={satori ? '0.4em' : 'clamp(0.4em, 2vw, 1em)'}
 		>
 			{message}
 		</p>
@@ -79,7 +79,6 @@
 		align-self: center;
 		background-color: #868e9699;
 		color: white;
-		padding: clamp(0.4em, 2vw, 1em);
 		min-width: 100px;
 		text-align: center;
 		max-width: 80%;
@@ -89,7 +88,7 @@
 		z-index: 1;
 		align-self: center;
 		background-color: #8f8f8f99;
-		color: rgba(255, 255, 255, 0.788);
+		color: rgba(255, 255, 255, 0.959);
 		padding: 0.2em;
 		min-width: 100px;
 		text-align: center;

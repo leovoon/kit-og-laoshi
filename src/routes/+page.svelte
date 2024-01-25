@@ -62,7 +62,11 @@
 		}}>分享</button
 	>
 </p>
-<footer style="text-align: center;opacity: 30%; margin-top: 4rem; font-size: smaller;">
+<a href={shareUrl} download="laoshi-share.png">
+	<button> 保存图片 </button>
+</a>
+
+<footer style="text-align: center;opacity: 30%; margin-top: 3rem; font-size: smaller;">
 	感谢开源让我知道怎么做这个网站
 </footer>
 
@@ -85,6 +89,14 @@
 
 	button:active {
 		transform: scale(0.95);
+	}
+
+	a {
+		text-decoration: none;
+	}
+
+	a button {
+		background-color: rgb(84, 57, 148);
 	}
 
 	input {
