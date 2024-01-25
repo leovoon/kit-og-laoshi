@@ -69,7 +69,11 @@
 			style:width={satori ? '100%' : undefined}
 			style:padding={satori ? '0.4em' : 'clamp(0.4em, 2vw, 1em)'}
 		>
-			{@html parseSpacetoNextLine(message)}
+			{#if satori}
+				{message}
+			{:else}
+				{@html parseSpacetoNextLine(message)}
+			{/if}
 		</p>
 	</div>
 	<span class="signature" style:font-size={satori ? '32px' : 'min(3vw,30px)'}>by温老师</span>
