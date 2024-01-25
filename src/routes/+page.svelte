@@ -4,15 +4,26 @@
 	import { parseQuery } from '$lib/parse';
 	import '../app.css';
 	import { goto } from '$app/navigation';
+	import html2canvas from 'html2canvas';
 
 	/** @type {import("./$types").PageData} */
 	export let data;
 
 	let userInput = '';
+	let element = null;
 	$: ({ width, height } = parseQuery($page.url.searchParams));
 	$: shareUrl = $page.url.origin + '/satori?message=' + data.message;
 	$: title = `老师分享 - "${data.message}"`;
 	$: description = '今天来点什么？ 生成一张温老师分享的文字吧！';
+
+	function saveAsCanvas() {
+		html2canvas(element).then((canvas) => {
+			const a = document.createElement('a');
+			a.href = canvas.toDataURL('image/png');
+			a.download = 'laoshi-share.png';
+			a.click();
+		});
+	}
 </script>
 
 <svelte:head>
@@ -30,7 +41,7 @@
 
 <h1>老师爱分享</h1>
 {#key data.message}
-	<Image message={data.message} {width} {height} />
+	<Image bind:element message={data.message} {width} {height} />
 {/key}
 <form
 	action="/"
@@ -63,8 +74,9 @@
 	>
 </p>
 {#if $page.url.searchParams.has('message')}
-	<a href={shareUrl} download="laoshi-share.png">
-		<button> 保存图片 </button>
+	<button on:click={saveAsCanvas} class="download"> 保存截图 </button>
+	<a href={shareUrl} download="laoshi-share-og.png">
+		<button> 保存OG图片 </button>
 	</a>
 {/if}
 

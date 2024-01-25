@@ -7,6 +7,7 @@
 	export let height = 393;
 	export let message = '你今天分享了吗？';
 	export let satori = false;
+	export let element;
 
 	const rng = seedrandom(message);
 	let palette = randomItem(colors);
@@ -51,6 +52,7 @@
 </script>
 
 <div
+	bind:this={element}
 	style="background-color: {bg}; max-width: {width}px; display: flex; position: relative;"
 	style:height={satori ? `${height}px` : undefined}
 >
