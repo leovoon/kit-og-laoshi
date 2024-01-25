@@ -39,6 +39,15 @@
 		const idx = Math.floor(random(arr.length, 0));
 		return arr[idx];
 	}
+
+	function parseSpacetoNextLine(str) {
+		// parse space, comma, period to next line, chinese comma
+		const parsed = str.replace(/ |,|。|，/g, '\n');
+
+		const convertedHtml = parsed.replace(/\n/g, '<br />');
+		return convertedHtml;
+	}
+	$: parseSpacetoNextLine(message), message;
 </script>
 
 <div
@@ -60,7 +69,7 @@
 			style:width={satori ? '100%' : undefined}
 			style:padding={satori ? '0.4em' : 'clamp(0.4em, 2vw, 1em)'}
 		>
-			{message}
+			{@html parseSpacetoNextLine(message)}
 		</p>
 	</div>
 	<span class="signature" style:font-size={satori ? '32px' : 'min(3vw,30px)'}>by温老师</span>
