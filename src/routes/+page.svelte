@@ -68,7 +68,8 @@
 			try {
 				await navigator.share(shareData);
 			} catch (err) {
-				alert('分享失败, 换个手机吧');
+				if (err.message == 'AbortError') return;
+				alert('分享失败, 别用内置浏览器， 换个浏览器，不然就换手机吧');
 			}
 		}}>分享</button
 	>
