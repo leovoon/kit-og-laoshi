@@ -63,15 +63,10 @@
 	>
 </p>
 {#if $page.url.searchParams.has('message')}
-	<p style="text-align: center; font-size: 1.5rem; margin-top: 1rem;">
-		<a href={shareUrl} download="laoshi-share.png">
-			<button> 保存图片 </button>
-		</a>
-	</p>
+	<a href={shareUrl} download="laoshi-share.png">
+		<button> 保存图片 </button>
+	</a>
 {/if}
-<a href={shareUrl} download="laoshi-share.png">
-	<button> 保存图片 </button>
-</a>
 
 <footer style="text-align: center;opacity: 30%; margin-top: 3rem; font-size: smaller;">
 	感谢开源让我知道怎么做这个网站
