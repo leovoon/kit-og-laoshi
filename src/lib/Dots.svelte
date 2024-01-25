@@ -57,11 +57,13 @@
 			style:position={satori ? 'absolute' : undefined}
 			style:font-size={satori ? '50px' : 'min(5vw, 50px)'}
 			class:grid={!satori}
+			style:word-break={satori ? 'keep-all' : undefined}
+			style:height={satori ? 'auto' : undefined}
 		>
 			{message}
-			<span class="signature" style:font-size={satori ? '24px' : 'min(3vw,30px)'}>by温老师</span>
 		</p>
 	</div>
+	<span class="signature" style:font-size={satori ? '32px' : 'min(3vw,30px)'}>by温老师</span>
 </div>
 
 <style>
@@ -77,16 +79,18 @@
 		align-self: center;
 		background-color: #868e9699;
 		color: white;
-		padding: 0.5em 1.5em;
+		padding: clamp(0.4em, 2vw, 1em);
 		min-width: 100px;
 		text-align: center;
+		max-width: 80%;
+		line-height: 1.5;
 	}
 	.signature {
 		z-index: 1;
 		align-self: center;
 		background-color: #8f8f8f99;
-		color: white;
-		padding: 0.2em 0.2em;
+		color: rgba(255, 255, 255, 0.788);
+		padding: 0.2em;
 		min-width: 100px;
 		text-align: center;
 		position: absolute;

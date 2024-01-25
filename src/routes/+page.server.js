@@ -6,7 +6,9 @@ export const load = ({ url }) => {
 	const { message } = parseQuery(url.searchParams);
 
 	if (!message) {
-		return { message: '你今天分享了吗？' };
+		return {
+			message: '你今天分享了吗？你今天分享了吗？你今天分享了吗？你今天分享了吗？你今天分享了吗？'
+		};
 	}
 
 	return {
