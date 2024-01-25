@@ -101,6 +101,10 @@
 		background-color: rgb(84, 57, 148);
 	}
 
+	.download {
+		background-color: rgb(148, 57, 133);
+	}
+
 	input {
 		width: 80%;
 		max-width: 30ch;
