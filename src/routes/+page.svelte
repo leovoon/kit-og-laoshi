@@ -1,10 +1,15 @@
 <script>
+	// @ts-nocheck
+
 	import { page } from '$app/stores';
 	import Image from '../lib/Dots.svelte';
 	import { parseQuery } from '$lib/parse';
 	import '../app.css';
 	import { goto } from '$app/navigation';
 	import html2canvas from 'html2canvas';
+	import ShareIcon from 'virtual:icons/material-symbols/share';
+	import DownloadRounded from 'virtual:icons/material-symbols/download-rounded';
+	import Close from 'virtual:icons/material-symbols/close';
 
 	/** @type {import("./$types").PageData} */
 	export let data;
@@ -45,41 +50,46 @@
 {/key}
 <form
 	action="/"
-	style="text-align: center;"
+	style="text-align: center; "
 	on:submit|preventDefault={(e) => {
 		const data = new FormData(e.target);
 		const searchParams = new URLSearchParams(data);
 		goto(`/?${searchParams.toString()}`, { keepfocus: true, noscroll: true });
 	}}
 >
-	<input type="text" placeholder="写点什么" name="message" bind:value={userInput} />
-	<button>生成</button>
+	<div style="position:relative;">
+		<input type="text" placeholder="写点什么" name="message" bind:value={userInput} />
+		{#if userInput}
+			<button class="x" on:click={() => (userInput = '')}>
+				<Close />
+			</button>
+		{/if}
+	</div>
+	<button type="submit">生成</button>
 </form>
-<p class="share">
+
+<p class="menu">
 	<button
-		style="		background-color: var(--primary);
-	"
+		style:background-color={'var(--primary)'}
+		style="display: flex; align-items: center; justify-content: center;"
 		on:click={async () => {
 			const shareData = {
 				title: title,
 				text: description,
 				url: $page.url.toString()
 			};
-			try {
-				await navigator.share(shareData);
-			} catch (err) {
-				if (err.message == 'AbortError') return;
-				alert('分享失败, 别用内置浏览器， 换个浏览器，不然就换手机吧');
-			}
-		}}>分享</button
+			await navigator.share(shareData);
+		}}
 	>
+		<ShareIcon />
+	</button>
+	{#if $page.url.searchParams.has('message')}
+		<button on:click={saveAsCanvas} class="download"> <DownloadRounded /> </button>
+		<!-- <a href={shareUrl} download="laoshi-share-og.png">
+			<button> 保存OG图片 </button>
+		</a> -->
+	{/if}
 </p>
-{#if $page.url.searchParams.has('message')}
-	<button on:click={saveAsCanvas} class="download"> 保存截图 </button>
-	<a href={shareUrl} download="laoshi-share-og.png">
-		<button> 保存OG图片 </button>
-	</a>
-{/if}
 
 <footer style="text-align: center;opacity: 30%; margin-top: 3rem; font-size: smaller;">
 	感谢开源让我知道怎么做这个网站
@@ -114,15 +124,34 @@
 		background-color: rgb(84, 57, 148);
 	}
 
+	button.x {
+		position: absolute;
+		width: 2rem;
+		height: 2rem;
+		top: 0;
+		right: 0;
+		border-bottom-right-radius: 8px;
+		border-top-right-radius: 8px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0;
+		transform: translateY(100%) translateX(-100%);
+	}
+
 	.download {
 		background-color: rgb(148, 57, 133);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 2rem;
 	}
 
 	input {
 		width: 80%;
-		max-width: 30ch;
 		height: 3rem;
 		padding: 0 1rem;
+		padding-right: 3rem;
 		margin-block: 1.5rem;
 		background-color: var(--background);
 		color: var(--text);
@@ -131,7 +160,12 @@
 		font-family: inherit;
 	}
 
-	.share {
+	.menu {
 		text-align: center;
+		justify-content: center;
+		max-width: 45ch;
+		margin: 0 auto;
+		display: flex;
+		gap: 1rem;
 	}
 </style>
