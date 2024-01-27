@@ -1,5 +1,9 @@
 import { parseQuery } from '$lib/parse';
-import { redirect } from '@sveltejs/kit';
+
+/** @type {import('@sveltejs/adapter-vercel').Config} */
+export const config = {
+	runtime: 'edge',
+};
 
 /** @type {import('./$types').PageServerLoad} */
 export const load = ({ url }) => {
