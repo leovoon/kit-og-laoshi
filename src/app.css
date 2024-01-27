@@ -1,9 +1,12 @@
 @font-face {
 	font-family: 'MyFont';
-	src: url('lib/fonts/HanyiSentyRubber.ttf') format('truetype');
+	src:
+		url('lib/fonts/HanyiSentyRubber.woff') format('woff'),
+		url('lib/fonts/HanyiSentyRubber.ttf') format('truetype');
 	font-weight: normal;
 	font-style: normal;
 	font-display: swap;
+	size-adjust: 115%;
 }
 html {
 	max-width: 70ch;
