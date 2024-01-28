@@ -127,7 +127,7 @@
 		{/if}
 		<p
 			class="message"
-			style:background-color={cny ? '' : 'rgb(104, 104, 104)'}
+			style:background-color={cny ? '' : '#868e9699'}
 			style:text-shadow={cny ? '2px 2px 5px black' : ''}
 			style:transform={satori ? `translateX(${width / 2}px) translateX(-50%);` : undefined}
 			style:position={satori ? 'absolute' : undefined}
