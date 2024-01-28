@@ -7,7 +7,9 @@ const WIDTH = 1200;
  */
 export function parseQuery(query) {
 	const message = query.get('message') ?? undefined;
+	const cny = JSON.parse(query.get('cny') ?? 'false') ?? undefined;
+	const selected = query.get('selected') ?? undefined;
 	const width = query.get('w') ?? WIDTH;
 	const height = query.get('h') ?? HEIGHT;
-	return { message, width: +width, height: +height };
+	return { message, width: +width, height: +height, cny, selected };
 }

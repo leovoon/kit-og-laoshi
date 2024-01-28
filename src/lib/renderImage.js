@@ -8,7 +8,7 @@ const fontData = read(hanyiSentyRubber).arrayBuffer();
 
 /**
  * @param {typeof import("./Dots.svelte").default} component
- * @param {{ width: number; height: number; satori: boolean; message?: string | undefined; }} props
+ * @param {{ width: number; cny?: boolean, selected?: string, height: number; satori: boolean; message?: string | undefined; }} props
  * @param {number} height
  * @param {number} width
  */

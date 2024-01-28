@@ -2,25 +2,38 @@
 	// @ts-nocheck
 
 	import { page } from '$app/stores';
-	import Image from '../lib/Dots.svelte';
+	import Dots from '../lib/Dots.svelte';
 	import { parseQuery } from '$lib/parse';
 	import '../app.css';
-	import { goto } from '$app/navigation';
+	import { goto, invalidate } from '$app/navigation';
 	import html2canvas from 'html2canvas';
 	import ShareIcon from 'virtual:icons/material-symbols/share';
 	import DownloadRounded from 'virtual:icons/material-symbols/download-rounded';
 	import Close from 'virtual:icons/material-symbols/close';
+	import { queryParameters, ssp } from 'sveltekit-search-params';
 
 	/** @type {import("./$types").PageData} */
 	export let data;
 
 	let userInput = '';
 	let element = null;
+	let options = ['dragon', 'blossom', 'red-packet', 'coin', 'lantern', 'gold'];
+
+	const qStore = queryParameters(
+		{
+			cny: ssp.boolean(false),
+			selected: ssp.string('dragon')
+		},
+		{
+			showDefaults: false,
+			sorted: true
+		}
+	);
+
 	$: ({ width, height } = parseQuery($page.url.searchParams));
 	$: shareUrl = $page.url.origin + '/satori?message=' + data.message;
 	$: title = `老师分享 - "${data.message}"`;
 	$: description = '今天来点什么？ 生成一张温老师分享的文字吧！';
-
 	function saveAsCanvas() {
 		html2canvas(element).then((canvas) => {
 			const a = document.createElement('a');
@@ -45,22 +58,57 @@
 >
 
 <h1>老师爱分享</h1>
-{#key data.message}
-	<Image bind:element message={data.message} {width} {height} />
+{#key data}
+	<Dots
+		bind:element
+		message={data.message}
+		{width}
+		{height}
+		cny={data.cny}
+		selected={data.selected}
+	/>
 {/key}
+<div style="display: grid; place-items: center;">
+	<div style="display: inline-flex; align-items: center; gap: .5rem; ">
+		<input
+			style="width: 30px;"
+			type="checkbox"
+			id="cny"
+			name="cny"
+			bind:checked={$qStore.cny}
+			on:change={() => {}}
+		/>
+		<label style="font-size: 1.5rem;" for="cny"> cny</label><br />
+	</div>
+
+	{#if $qStore.cny}
+		<div style="display: flex;  justify-content: center; align-items: center;">
+			{#each options as value}
+				<label
+					><input
+						style="width: 30px; height: 30px"
+						type="radio"
+						{value}
+						bind:group={$qStore.selected}
+					/>
+					{value}</label
+				>
+			{/each}
+		</div>
+	{/if}
+</div>
+
 <form
 	action="/"
 	style="text-align: center; "
 	on:submit|preventDefault={(e) => {
-		const data = new FormData(e.target);
-		const searchParams = new URLSearchParams(data);
-		goto(`/?${searchParams.toString()}`, { keepfocus: true, noscroll: true });
+		$qStore.message = userInput;
 	}}
 >
 	<div style="position:relative;">
 		<input type="text" placeholder="写点什么" name="message" bind:value={userInput} />
-		{#if userInput}
-			<button class="x" type="reset" on:click={() => (userInput = '')}>
+		{#if $qStore.message}
+			<button class="x" type="button" on:click={() => (userInput = '')}>
 				<Close />
 			</button>
 		{/if}

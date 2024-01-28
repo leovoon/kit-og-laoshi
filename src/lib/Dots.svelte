@@ -1,28 +1,78 @@
 <script>
 	import colors from 'nice-color-palettes';
 	import seedrandom from 'seedrandom';
+	import NewYearSpriteGroupPath from './NewYearSpriteGroupPath.svelte';
 
 	export let count = 100;
 	export let width = 750;
 	export let height = 393;
 	export let message = '你今天分享了吗？';
+	export let author = '温老师';
 	export let satori = false;
 	export let element;
+	export let cny = false;
+	export let selected = '';
 
 	const rng = seedrandom(message);
 	let palette = randomItem(colors);
 
+	const chineseNewYearPalette = ['#4d6c31', '#70994D', '#F6EB5D', '#FEB954', '#F7484D']; // RGB codes for red, yellow, and green
+	let cnyPalette = chineseNewYearPalette.slice(0, -1);
+	const cnyBg = chineseNewYearPalette[chineseNewYearPalette.length - 1];
+
 	const bg = palette[palette.length - 1];
 	palette = palette.slice(0, -1);
-
+	count = cny ? 20 : count;
 	const sizes = [0.3, 0.5, 0.8, 1.2, 4, 6];
 
 	let points = new Array(count).fill(null).map(() => ({
 		x: random(width, 0),
 		y: random(height, 0),
-		color: randomItem(palette),
+		color: cny ? randomItem(cnyPalette) : randomItem(palette),
 		size: randomItem(sizes)
 	}));
+
+	/**
+	 * @param {{ left: any; right: any; top: any; bottom: any; }} rect1
+	 * @param {{ left: any; right: any; top: any; bottom: any; }} rect2
+	 */
+	function intersects(rect1, rect2) {
+		return (
+			rect1.left <= rect2.right &&
+			rect1.right >= rect2.left &&
+			rect1.top <= rect2.bottom &&
+			rect1.bottom >= rect2.top
+		);
+	}
+
+	$: noOverlapPoints = points.map((point) => {
+		const rect1 = {
+			left: point.x - point.size,
+			right: point.x + point.size,
+			top: point.y - point.size,
+			bottom: point.y + point.size
+		};
+		const overlap = points.filter((p) => {
+			const rect2 = {
+				left: p.x - p.size,
+				right: p.x + p.size,
+				top: p.y - p.size,
+				bottom: p.y + p.size
+			};
+			return intersects(rect1, rect2);
+		});
+		if (overlap.length > 1) {
+			const newPoint = {
+				x: random(width, 0),
+				y: random(height, 0),
+				color: cny ? randomItem(cnyPalette) : randomItem(palette),
+				size: randomItem(sizes)
+			};
+			return newPoint;
+		} else {
+			return point;
+		}
+	});
 
 	/**
 	 * @param {number} upper
@@ -41,7 +91,7 @@
 		return arr[idx];
 	}
 
-	function parseSpacetoNextLine(str) {
+	function parseSpacetoNextLine(str = '') {
 		// parse space, comma, period to next line, chinese comma
 		const parsed = str.replace(/ |,|。|，/g, '\n');
 
@@ -49,6 +99,7 @@
 		return convertedHtml;
 	}
 	$: parseSpacetoNextLine(message), message;
+	$: console.log(cny);
 </script>
 
 <div
@@ -56,14 +107,28 @@
 	style="background-color: {bg}; max-width: {width}px; display: flex; position: relative;"
 	style:height={satori ? `${height}px` : undefined}
 >
-	<div style="background-color: {bg}; width: 100%;" style:display={satori ? 'flex' : 'grid'}>
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" class:grid={!satori}>
-			{#each points as { x, y, color, size }}
-				<circle cx={x} cy={y} r={size} fill={color} />
-			{/each}
-		</svg>
+	<div
+		style="background-color: {cny ? cnyBg : bg}; width: 100%;"
+		style:display={satori ? 'flex' : 'grid'}
+	>
+		{#if cny}
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" class:grid={!satori}>
+				{#each noOverlapPoints as { x, y, color, size }, index}
+					<!-- <NewYearSpriteGroupPath {color} {x} {y} scale="1" {selected} /> -->
+					<NewYearSpriteGroupPath {color} {x} {y} {selected} />
+				{/each}
+			</svg>
+		{:else}
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" class:grid={!satori}>
+				{#each points as { x, y, color, size }, index}
+					<circle cx={x} cy={y} r={size} fill={color} />
+				{/each}
+			</svg>
+		{/if}
 		<p
 			class="message"
+			style:background-color={cny ? '' : 'rgb(104, 104, 104)'}
+			style:text-shadow={cny ? '2px 2px 5px black' : ''}
 			style:transform={satori ? `translateX(${width / 2}px) translateX(-50%);` : undefined}
 			style:position={satori ? 'absolute' : undefined}
 			style:font-size={satori ? '50px' : 'min(5vw, 50px)'}
@@ -78,7 +143,7 @@
 			{/if}
 		</p>
 	</div>
-	<span class="signature" style:font-size={satori ? '32px' : 'min(3vw,30px)'}>by温老师</span>
+	<span class="signature" style:font-size={satori ? '32px' : 'min(3vw,30px)'}>by{author}</span>
 </div>
 
 <style>
@@ -92,7 +157,6 @@
 	.message {
 		z-index: 1;
 		align-self: center;
-		background-color: #868e9699;
 		color: white;
 		min-width: 100px;
 		text-align: center;
