@@ -60,7 +60,7 @@
 	<div style="position:relative;">
 		<input type="text" placeholder="写点什么" name="message" bind:value={userInput} />
 		{#if userInput}
-			<button class="x" on:click={() => (userInput = '')}>
+			<button class="x" type="reset" on:click={() => (userInput = '')}>
 				<Close />
 			</button>
 		{/if}
