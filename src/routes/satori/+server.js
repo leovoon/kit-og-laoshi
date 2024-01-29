@@ -5,10 +5,10 @@ import { componentToPng } from '$lib/renderImage';
 /** @type {import('./$types').RequestHandler} */
 export const GET = async ({ url }) => {
 	const query = url.searchParams;
-	const { message, width, height, selected, cny } = parseQuery(query);
+	const { message, author, width, height, selected, cny } = parseQuery(query);
 	return componentToPng(
 		Image,
-		{ message, cny, selected, width, height, satori: true },
+		{ message, author, cny, selected, width, height, satori: true },
 		height,
 		width
 	);

@@ -7,7 +7,8 @@
 	export let width = 750;
 	export let height = 393;
 	export let message = '你今天分享了吗？';
-	export let author = '温老师';
+	export let author = 'by温老师';
+	export let authorUpdate = author;
 	export let satori = false;
 	export let element;
 	export let cny = false;
@@ -93,7 +94,13 @@
 
 	function parseSpacetoNextLine(str = '') {
 		// parse space, comma, period to next line, chinese comma
-		const parsed = str.replace(/ |,|。|，/g, '\n');
+		// const parsed = str.replace(/ |,|。|，/g, '\n');
+
+		// append \n behind space, comma, period to next line, chinese comma including space
+		// const parsed = str.replace(/(?= |,|。|，)/g, '\n');
+
+		// append exclude space
+		const parsed = str.replace(/(?=,|。|，)/g, '\n');
 
 		const convertedHtml = parsed.replace(/\n/g, '<br />');
 		return convertedHtml;
@@ -143,7 +150,12 @@
 			{/if}
 		</p>
 	</div>
-	<span class="signature" style:font-size={satori ? '32px' : 'min(3vw,30px)'}>by{author}</span>
+	<span
+		class="signature"
+		contenteditable="true"
+		bind:innerText={authorUpdate}
+		style:font-size={satori ? '32px' : 'min(3vw,30px)'}>{author}</span
+	>
 </div>
 
 <style>
@@ -170,7 +182,7 @@
 		background-color: #8f8f8f99;
 		color: rgba(255, 255, 255, 0.959);
 		padding: 0.2em;
-		min-width: 100px;
+		min-width: 50px;
 		text-align: center;
 		position: absolute;
 		bottom: 0;

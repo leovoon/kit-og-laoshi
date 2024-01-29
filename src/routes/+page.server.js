@@ -7,20 +7,22 @@ export const config = {
 
 /** @type {import('./$types').PageServerLoad} */
 export const load = ({ url, depends }) => {
-	const { message, cny, selected } = parseQuery(url.searchParams);
+	const { message, cny, selected, author } = parseQuery(url.searchParams);
 	depends('home:generate');
 
-	if (!message) {
+	if (!message || !author) {
 		return {
 			message: cny ? '恭喜发财' : '你今天分享了吗？',
 			cny,
-			selected
+			selected,
+			author: 'by温老师'
 		};
 	}
 
 	return {
 		message,
 		cny,
-		selected
+		selected,
+		author
 	};
 };

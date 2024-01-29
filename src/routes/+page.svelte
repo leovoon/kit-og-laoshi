@@ -16,6 +16,7 @@
 	export let data;
 
 	let userInput = '';
+	let authorInput = '';
 	let element = null;
 	let options = ['dragon', 'blossom', 'red-packet', 'coin', 'lantern', 'gold'];
 
@@ -66,6 +67,8 @@
 		{height}
 		cny={data.cny}
 		selected={data.selected}
+		author={data.author}
+		bind:authorUpdate={$qStore.author}
 	/>
 {/key}
 <div style="display: grid; place-items: center;">
