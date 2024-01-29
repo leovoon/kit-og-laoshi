@@ -85,11 +85,11 @@
 	</div>
 
 	{#if $qStore.cny}
-		<div style="display: flex;  justify-content: center; align-items: center;">
+		<div style="display: flex;  justify-content: center; align-items: center; gap: .2rem">
 			{#each options as value}
 				<label
 					><input
-						style="width: 30px; height: 30px"
+						style="width: 20px; height: 20px; "
 						type="radio"
 						{value}
 						bind:group={$qStore.selected}
@@ -110,7 +110,7 @@
 >
 	<div style="position:relative;">
 		<input type="text" placeholder="写点什么" name="message" bind:value={userInput} />
-		{#if $qStore.message}
+		{#if userInput}
 			<button class="x" type="button" on:click={() => (userInput = '')}>
 				<Close />
 			</button>
@@ -177,8 +177,8 @@
 
 	button.x {
 		position: absolute;
-		width: 2rem;
-		height: 2rem;
+		width: 3rem;
+		height: 3rem;
 		top: 0;
 		right: 0;
 		border-bottom-right-radius: 8px;
@@ -187,7 +187,7 @@
 		align-items: center;
 		justify-content: center;
 		margin: 0;
-		transform: translateY(100%) translateX(-100%);
+		transform: translateY(50%);
 	}
 
 	.download {
@@ -199,10 +199,12 @@
 	}
 
 	input {
-		width: 80%;
+		width: 100%;
 		height: 3rem;
 		padding: 0 1rem;
-		padding-right: 3rem;
+		resize: vertical;
+		box-sizing: border-box;
+		padding-right: 3.5rem;
 		margin-block: 1.5rem;
 		background-color: var(--background);
 		color: var(--text);
