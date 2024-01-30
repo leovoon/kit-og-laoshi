@@ -68,7 +68,7 @@
 		cny={data.cny}
 		selected={data.selected}
 		author={data.author}
-		bind:authorUpdate={$qStore.author}
+		bind:authorUpdate={$qStore.authorUpdate}
 	/>
 {/key}
 <div style="display: grid; place-items: center;">
