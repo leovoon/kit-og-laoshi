@@ -154,6 +154,7 @@
 		class="signature"
 		contenteditable="true"
 		bind:innerText={authorUpdate}
+		on:blur
 		style:font-size={satori ? '32px' : 'min(3vw,30px)'}>{author}</span
 	>
 </div>

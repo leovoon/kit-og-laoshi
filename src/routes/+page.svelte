@@ -16,7 +16,7 @@
 	export let data;
 
 	let userInput = '';
-	let authorInput = '';
+	let authorInput = data.author;
 	let element = null;
 	let options = ['dragon', 'blossom', 'red-packet', 'coin', 'lantern', 'gold'];
 
@@ -68,7 +68,10 @@
 		cny={data.cny}
 		selected={data.selected}
 		author={data.author}
-		bind:authorUpdate={$qStore.authorUpdate}
+		bind:authorUpdate={authorInput}
+		on:blur={() => {
+			$qStore.author = authorInput;
+		}}
 	/>
 {/key}
 <div style="display: grid; place-items: center;">
