@@ -5,7 +5,6 @@
 	import Dots from '../lib/Dots.svelte';
 	import { parseQuery } from '$lib/parse';
 	import '../app.css';
-	import { goto, invalidate } from '$app/navigation';
 	import html2canvas from 'html2canvas';
 	import ShareIcon from 'virtual:icons/material-symbols/share';
 	import DownloadRounded from 'virtual:icons/material-symbols/download-rounded';
@@ -37,7 +36,9 @@
 	$: title = `老师分享 - "${data.message}"`;
 	$: description = '今天来点什么？ 生成一张温老师分享的文字吧！';
 	function saveAsCanvas() {
-		html2canvas(element).then((canvas) => {
+		html2canvas(element, {
+			y: -0.2
+		}).then((canvas) => {
 			const a = document.createElement('a');
 			a.href = canvas.toDataURL('image/png');
 			a.download = 'laoshi-share.png';
