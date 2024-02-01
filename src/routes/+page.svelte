@@ -23,7 +23,8 @@
 	const qStore = queryParameters(
 		{
 			cny: ssp.boolean(false),
-			selected: ssp.string('dragon')
+			selected: ssp.string('dragon'),
+			author: ssp.string('by温老师')
 		},
 		{
 			showDefaults: false,
