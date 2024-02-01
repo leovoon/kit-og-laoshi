@@ -147,7 +147,9 @@
 </p>
 
 <footer style="text-align: center;opacity: 30%; margin-top: 3rem; font-size: smaller;">
-	感谢开源让我知道怎么做这个网站
+	Built using <a href="https://kit.svelte.dev/">SvelteKit</a> and
+	<a href="https://github.com/vercel/satori/tree/main">satori</a> by
+	<a href="https://leovoon.github.io">leovoon</a> hosted on Vercel
 </footer>
 
 <style>
