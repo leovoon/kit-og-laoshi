@@ -10,6 +10,8 @@
 	import DownloadRounded from 'virtual:icons/material-symbols/download-rounded';
 	import Close from 'virtual:icons/material-symbols/close';
 	import { queryParameters, ssp } from 'sveltekit-search-params';
+	import NewYearSpriteCheckboxes from '../NewYearSpriteCheckboxes.svelte';
+	import HanyiSentyRubber from '../lib/fonts/HanyiSentyRubber.woff';
 
 	/** @type {import("./$types").PageData} */
 	export let data;
@@ -48,6 +50,8 @@
 </script>
 
 <svelte:head>
+	<link rel="preload" href={HanyiSentyRubber} as="font" crossOrigin="anonymous" />
+
 	<title>{title}</title><meta content="summary_large_image" name="twitter:card" /><meta
 		content={title}
 		property="og:site_name"
@@ -90,19 +94,7 @@
 	</div>
 
 	{#if $qStore.cny}
-		<div style="display: flex;  justify-content: center; align-items: center; gap: .2rem">
-			{#each options as value}
-				<label
-					><input
-						style="width: 20px; height: 20px; "
-						type="radio"
-						{value}
-						bind:group={$qStore.selected}
-					/>
-					{value}</label
-				>
-			{/each}
-		</div>
+		<NewYearSpriteCheckboxes {options} bind:group={$qStore.selected} />
 	{/if}
 </div>
 
@@ -176,10 +168,6 @@
 
 	a {
 		text-decoration: none;
-	}
-
-	a button {
-		background-color: rgb(84, 57, 148);
 	}
 
 	button.x {
