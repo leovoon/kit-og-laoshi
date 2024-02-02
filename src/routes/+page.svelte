@@ -19,7 +19,6 @@
 	import Dragon from '../lib/svgs/Dragon.svelte';
 	import Blossom from '../lib/svgs/Blossom.svelte';
 	import NewYearTriggerCheckbox from '$lib/NewYearTriggerCheckbox.svelte';
-	import { fade } from 'svelte/transition';
 
 	/** @type {import("./$types").PageData} */
 	export let data;
