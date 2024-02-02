@@ -2,8 +2,9 @@
 	import colors from 'nice-color-palettes';
 	import seedrandom from 'seedrandom';
 	import NewYearSpriteGroupPath from './NewYearSpriteGroupPath.svelte';
+	import { queryParameters, ssp } from 'sveltekit-search-params';
 
-	export let count = 100;
+	export let count = 20;
 	export let width = 750;
 	export let height = 393;
 	export let message = '你今天分享了吗？';
@@ -14,6 +15,15 @@
 	export let cny = false;
 	export let selected = '';
 
+	const qStore = queryParameters(
+		{
+			count: ssp.number(count)
+		},
+		{
+			debounceHistory: 1000
+		}
+	);
+
 	const rng = seedrandom(message);
 	let palette = randomItem(colors);
 
@@ -23,57 +33,14 @@
 
 	const bg = palette[palette.length - 1];
 	palette = palette.slice(0, -1);
-	count = cny ? 20 : count;
 	const sizes = [0.3, 0.5, 0.8, 1.2, 4, 6];
 
-	let points = new Array(count).fill(null).map(() => ({
+	$: points = new Array($qStore.count).fill(null).map(() => ({
 		x: random(width, 0),
 		y: random(height, 0),
 		color: cny ? randomItem(cnyPalette) : randomItem(palette),
 		size: randomItem(sizes)
 	}));
-
-	/**
-	 * @param {{ left: any; right: any; top: any; bottom: any; }} rect1
-	 * @param {{ left: any; right: any; top: any; bottom: any; }} rect2
-	 */
-	function intersects(rect1, rect2) {
-		return (
-			rect1.left <= rect2.right &&
-			rect1.right >= rect2.left &&
-			rect1.top <= rect2.bottom &&
-			rect1.bottom >= rect2.top
-		);
-	}
-
-	$: noOverlapPoints = points.map((point) => {
-		const rect1 = {
-			left: point.x - point.size,
-			right: point.x + point.size,
-			top: point.y - point.size,
-			bottom: point.y + point.size
-		};
-		const overlap = points.filter((p) => {
-			const rect2 = {
-				left: p.x - p.size,
-				right: p.x + p.size,
-				top: p.y - p.size,
-				bottom: p.y + p.size
-			};
-			return intersects(rect1, rect2);
-		});
-		if (overlap.length > 1) {
-			const newPoint = {
-				x: random(width, 0),
-				y: random(height, 0),
-				color: cny ? randomItem(cnyPalette) : randomItem(palette),
-				size: randomItem(sizes)
-			};
-			return newPoint;
-		} else {
-			return point;
-		}
-	});
 
 	/**
 	 * @param {number} upper
@@ -108,6 +75,10 @@
 	$: parseSpacetoNextLine(message), message;
 </script>
 
+<div class="slider">
+	{$qStore.count}
+	<input type="range" min="1" max="100" bind:value={$qStore.count} />
+</div>
 <div
 	bind:this={element}
 	style="background-color: {bg}; max-width: {width}px; display: flex; position: relative;"
@@ -119,7 +90,7 @@
 	>
 		{#if cny}
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" class:grid={!satori}>
-				{#each noOverlapPoints as { x, y, color, size }, index}
+				{#each points as { x, y, color }, index}
 					<!-- <NewYearSpriteGroupPath {color} {x} {y} scale="1" {selected} /> -->
 					<NewYearSpriteGroupPath {color} {x} {y} {selected} />
 				{/each}
@@ -187,5 +158,87 @@
 		position: absolute;
 		bottom: 0;
 		right: 0;
+	}
+
+	.slider {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+	}
+
+	input[type='range'] {
+		height: 20px;
+		-webkit-appearance: none;
+		appearance: none;
+		background-color: var(--background);
+	}
+	input[type='range']:focus {
+		outline: none;
+	}
+	input[type='range']::-webkit-slider-runnable-track {
+		width: 100%;
+		height: 8px;
+		cursor: pointer;
+		background: var(--primary);
+		border-radius: 5px;
+	}
+	input[type='range']::-webkit-slider-thumb {
+		height: 20px;
+		width: 20px;
+		border-radius: 5px;
+		background: var(--highlight);
+		margin-top: -5px;
+		cursor: pointer;
+		-webkit-appearance: none;
+	}
+	input[type='range']:focus::-webkit-slider-runnable-track {
+		background: var(--primary);
+	}
+	input[type='range']::-moz-range-track {
+		width: 100%;
+		height: 12px;
+		cursor: pointer;
+		background: var(--highlight);
+		border-radius: 4px;
+		border: 2px solid #f27b7f;
+	}
+	input[type='range']::-moz-range-thumb {
+		border: 2px solid #f27b7f;
+		height: 30px;
+		width: 30px;
+		border-radius: 0px;
+		cursor: pointer;
+	}
+	input[type='range']::-ms-track {
+		width: 100%;
+		height: 10px;
+		cursor: pointer;
+		background: transparent;
+		border-color: transparent;
+		color: transparent;
+	}
+	input[type='range']::-ms-fill-lower {
+		background: var(--secondary);
+		border: 2px solid #f27b7f;
+		border-radius: 8px;
+	}
+	input[type='range']::-ms-fill-upper {
+		background: #ff96ab;
+		border: 2px solid #f27b7f;
+		border-radius: 8px;
+	}
+	input[type='range']::-ms-thumb {
+		margin-top: 1px;
+		border: 2px solid #f27b7f;
+		height: 30px;
+		width: 30px;
+		border-radius: 0px;
+		cursor: pointer;
+	}
+	input[type='range']:focus::-ms-fill-lower {
+		background: #ff96ab;
+	}
+	input[type='range']:focus::-ms-fill-upper {
+		background: #ff96ab;
 	}
 </style>
