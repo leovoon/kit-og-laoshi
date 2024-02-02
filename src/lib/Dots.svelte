@@ -106,7 +106,6 @@
 		return convertedHtml;
 	}
 	$: parseSpacetoNextLine(message), message;
-	$: console.log(cny);
 </script>
 
 <div

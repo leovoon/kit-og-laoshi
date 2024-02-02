@@ -10,8 +10,16 @@
 	import DownloadRounded from 'virtual:icons/material-symbols/download-rounded';
 	import Close from 'virtual:icons/material-symbols/close';
 	import { queryParameters, ssp } from 'sveltekit-search-params';
-	import NewYearSpriteCheckboxes from '../NewYearSpriteCheckboxes.svelte';
+	import NewYearSpriteCheckboxes from '../lib/NewYearSpriteCheckboxes.svelte';
 	import HanyiSentyRubber from '../lib/fonts/HanyiSentyRubber.woff';
+	import Coin from '../lib/svgs/Coin.svelte';
+	import RedPacket from '../lib/svgs/RedPacket.svelte';
+	import Lantern from '../lib/svgs/Lantern.svelte';
+	import Gold from '../lib/svgs/Gold.svelte';
+	import Dragon from '../lib/svgs/Dragon.svelte';
+	import Blossom from '../lib/svgs/Blossom.svelte';
+	import NewYearTriggerCheckbox from '$lib/NewYearTriggerCheckbox.svelte';
+	import { fade } from 'svelte/transition';
 
 	/** @type {import("./$types").PageData} */
 	export let data;
@@ -19,7 +27,15 @@
 	let userInput = '';
 	let authorInput = data.author;
 	let element = null;
-	let options = ['dragon', 'blossom', 'red-packet', 'coin', 'lantern', 'gold'];
+
+	let options = [
+		{ value: 'dragon', component: Dragon },
+		{ value: 'blossom', component: Blossom },
+		{ value: 'red-packet', component: RedPacket },
+		{ value: 'coin', component: Coin },
+		{ value: 'lantern', component: Lantern },
+		{ value: 'gold', component: Gold }
+	];
 
 	const qStore = queryParameters(
 		{
@@ -81,17 +97,7 @@
 	/>
 {/key}
 <div style="display: grid; place-items: center;">
-	<div style="display: inline-flex; align-items: center; gap: .5rem; ">
-		<input
-			style="width: 30px;"
-			type="checkbox"
-			id="cny"
-			name="cny"
-			bind:checked={$qStore.cny}
-			on:change={() => {}}
-		/>
-		<label style="font-size: 1.5rem;" for="cny"> cny</label><br />
-	</div>
+	<NewYearTriggerCheckbox bind:checked={$qStore.cny} />
 
 	{#if $qStore.cny}
 		<NewYearSpriteCheckboxes {options} bind:group={$qStore.selected} />
