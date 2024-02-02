@@ -96,7 +96,7 @@
 		}}
 	/>
 {/key}
-<div style="display: grid; place-items: center;">
+<div style="display: flex; flex-direction:column; justify-content:center; align-items:center; ">
 	<NewYearTriggerCheckbox bind:checked={$qStore.cny} />
 
 	{#if $qStore.cny}

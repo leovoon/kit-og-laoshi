@@ -19,7 +19,7 @@
 
 <div
 	transition:fade={{ duration: 150 }}
-	style="display: flex;  justify-content: center; align-items: center; gap: 2rem"
+	style="display: flex;  justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap;"
 >
 	{#each options as { value, component }}
 		<label
@@ -38,12 +38,17 @@
 		align-items: center;
 		justify-content: center;
 		position: relative;
-		width: 50px;
-		height: 50px;
+		width: clamp(20px, 9vw, 50px);
+		height: clamp(20px, 9vw, 50px);
 	}
 	label span {
 		position: absolute;
 		inset: 0;
+	}
+
+	label span :global(svg) {
+		width: clamp(20px, 9vw, 50px);
+		height: clamp(20px, 9vw, 50px);
 	}
 	input[type='radio'] {
 		appearance: none;
@@ -51,8 +56,9 @@
 	input[type='radio']::before {
 		content: '';
 		display: block;
-		width: 50px;
-		height: 50px;
+		width: clamp(20px, 9vw, 50px);
+
+		height: clamp(20px, 9vw, 50px);
 		border-radius: 50%;
 		border: 2px solid transparent;
 		position: absolute;
