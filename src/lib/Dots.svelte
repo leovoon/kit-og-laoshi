@@ -5,8 +5,8 @@
 	import { queryParameters, ssp } from 'sveltekit-search-params';
 
 	export let count = 20;
-	export let width = 750;
-	export let height = 393;
+	export let width = 1200;
+	export let height = 675;
 	export let message = '你今天分享了吗？';
 	export let author = 'by温老师';
 	export let authorUpdate = author;
@@ -15,32 +15,61 @@
 	export let cny = false;
 	export let selected = '';
 
+	let activeRatio = '16:9';
+
 	const qStore = queryParameters(
 		{
-			count: ssp.number(count)
+			count: ssp.number(count),
+			width: ssp.number(width)
 		},
 		{
-			debounceHistory: 1000
+			showDefaults: false,
+			pushHistory: false,
+			sort: true
 		}
 	);
-
-	const rng = seedrandom(message);
-	let palette = randomItem(colors);
-
 	const chineseNewYearPalette = ['#4d6c31', '#70994D', '#F6EB5D', '#FEB954', '#F7484D']; // RGB codes for red, yellow, and green
-	let cnyPalette = chineseNewYearPalette.slice(0, -1);
+	const cnyPalette = chineseNewYearPalette.slice(0, -1);
 	const cnyBg = chineseNewYearPalette[chineseNewYearPalette.length - 1];
+	let rng = seedrandom(message);
+	let palette = randomItem(colors);
 
 	const bg = palette[palette.length - 1];
 	palette = palette.slice(0, -1);
 	const sizes = [0.3, 0.5, 0.8, 1.2, 4, 6];
+	const ratios = [
+		{
+			width: 1200,
+			height: 900,
+			ratio: '4:3'
+		},
+		{
+			width: 675,
+			height: 675,
+			ratio: '1:1'
+		},
+		{
+			width: 1200,
+			height: 800,
+			ratio: '3:2'
+		},
+		{
+			width: 1200,
+			height: 675,
+			ratio: '16:9'
+		}
+	];
 
-	$: points = new Array($qStore.count).fill(null).map(() => ({
-		x: random(width, 0),
-		y: random(height, 0),
-		color: cny ? randomItem(cnyPalette) : randomItem(palette),
-		size: randomItem(sizes)
-	}));
+	/**
+	 * @param {number} width
+	 * @param {number} height
+	 * @param {string} ratio
+	 */
+	function setAspectRatio(width, height, ratio) {
+		$qStore.width = width;
+		$qStore.height = height;
+		activeRatio = ratio;
+	}
 
 	/**
 	 * @param {number} upper
@@ -72,12 +101,35 @@
 		const convertedHtml = parsed.replace(/\n/g, '<br />');
 		return convertedHtml;
 	}
+
 	$: parseSpacetoNextLine(message), message;
+	$: width = $qStore.width;
+	$: height = $qStore.height;
+	$: points = new Array($qStore.count).fill(null).map(() => ({
+		x: random(width, 0),
+		y: random(height, 0),
+		color: cny ? randomItem(cnyPalette) : randomItem(palette),
+		size: randomItem(sizes)
+	}));
 </script>
 
 <div class="slider">
 	{$qStore.count}
 	<input type="range" min="1" max="100" bind:value={$qStore.count} />
+</div>
+<div style="display: flex; gap: .2rem; padding-block: .2rem; ">
+	{#each ratios as { width, height, ratio }}
+		<button
+			style={'color: var(--primary); border: 1px solid var(--primary); cursor: pointer;' +
+				(activeRatio === ratio ? 'color: white' : '')}
+			style:background-color={activeRatio === ratio ? 'var(--highlight)' : 'var(--background)'}
+			on:click={() => {
+				setAspectRatio(width, height, ratio);
+			}}
+		>
+			{ratio}
+		</button>
+	{/each}
 </div>
 <div
 	bind:this={element}

@@ -1,4 +1,4 @@
-const HEIGHT = 630;
+const HEIGHT = 675;
 const WIDTH = 1200;
 
 /**
