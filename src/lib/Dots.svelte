@@ -20,7 +20,8 @@
 	const qStore = queryParameters(
 		{
 			count: ssp.number(count),
-			width: ssp.number(width)
+			width: ssp.number(width),
+			height: ssp.number(height)
 		},
 		{
 			showDefaults: false,
