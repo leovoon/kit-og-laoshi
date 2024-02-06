@@ -3,6 +3,7 @@
 	import seedrandom from 'seedrandom';
 	import NewYearSpriteGroupPath from './NewYearSpriteGroupPath.svelte';
 	import { queryParameters, ssp } from 'sveltekit-search-params';
+	import Checkbox from './Checkbox.svelte';
 
 	export let count = 20;
 	export let width = 1200;
@@ -14,21 +15,8 @@
 	export let element;
 	export let cny = false;
 	export let selected = '';
+	export let showAuthor = true;
 
-	let activeRatio = '16:9';
-
-	const qStore = queryParameters(
-		{
-			count: ssp.number(count),
-			width: ssp.number(width),
-			height: ssp.number(height)
-		},
-		{
-			showDefaults: false,
-			pushHistory: false,
-			sort: true
-		}
-	);
 	const chineseNewYearPalette = ['#4d6c31', '#70994D', '#F6EB5D', '#FEB954', '#F7484D']; // RGB codes for red, yellow, and green
 	const cnyPalette = chineseNewYearPalette.slice(0, -1);
 	const cnyBg = chineseNewYearPalette[chineseNewYearPalette.length - 1];
@@ -38,39 +26,6 @@
 	const bg = palette[palette.length - 1];
 	palette = palette.slice(0, -1);
 	const sizes = [0.3, 0.5, 0.8, 1.2, 4, 6];
-	const ratios = [
-		{
-			width: 1200,
-			height: 900,
-			ratio: '4:3'
-		},
-		{
-			width: 675,
-			height: 675,
-			ratio: '1:1'
-		},
-		{
-			width: 1200,
-			height: 800,
-			ratio: '3:2'
-		},
-		{
-			width: 1200,
-			height: 675,
-			ratio: '16:9'
-		}
-	];
-
-	/**
-	 * @param {number} width
-	 * @param {number} height
-	 * @param {string} ratio
-	 */
-	function setAspectRatio(width, height, ratio) {
-		$qStore.width = width;
-		$qStore.height = height;
-		activeRatio = ratio;
-	}
 
 	/**
 	 * @param {number} upper
@@ -104,9 +59,8 @@
 	}
 
 	$: parseSpacetoNextLine(message), message;
-	$: width = $qStore.width;
-	$: height = $qStore.height;
-	$: points = new Array($qStore.count).fill(null).map(() => ({
+
+	$: points = new Array(count).fill(null).map(() => ({
 		x: random(width, 0),
 		y: random(height, 0),
 		color: cny ? randomItem(cnyPalette) : randomItem(palette),
@@ -114,24 +68,6 @@
 	}));
 </script>
 
-<div class="slider">
-	{$qStore.count}
-	<input type="range" min="1" max="100" bind:value={$qStore.count} />
-</div>
-<div style="display: flex; gap: .2rem; padding-block: .2rem; ">
-	{#each ratios as { width, height, ratio }}
-		<button
-			style={'color: var(--primary); border: 1px solid var(--primary); cursor: pointer;' +
-				(activeRatio === ratio ? 'color: white' : '')}
-			style:background-color={activeRatio === ratio ? 'var(--highlight)' : 'var(--background)'}
-			on:click={() => {
-				setAspectRatio(width, height, ratio);
-			}}
-		>
-			{ratio}
-		</button>
-	{/each}
-</div>
 <div
 	bind:this={element}
 	style="background-color: {bg}; max-width: {width}px; display: flex; position: relative;"
@@ -174,6 +110,7 @@
 		</p>
 	</div>
 	<span
+		style:display={showAuthor ? 'block' : 'none'}
 		class="signature"
 		contenteditable="true"
 		bind:innerText={authorUpdate}
@@ -211,87 +148,5 @@
 		position: absolute;
 		bottom: 0;
 		right: 0;
-	}
-
-	.slider {
-		display: flex;
-		justify-content: flex-end;
-		align-items: center;
-	}
-
-	input[type='range'] {
-		height: 20px;
-		-webkit-appearance: none;
-		appearance: none;
-		background-color: var(--background);
-	}
-	input[type='range']:focus {
-		outline: none;
-	}
-	input[type='range']::-webkit-slider-runnable-track {
-		width: 100%;
-		height: 8px;
-		cursor: pointer;
-		background: var(--primary);
-		border-radius: 5px;
-	}
-	input[type='range']::-webkit-slider-thumb {
-		height: 20px;
-		width: 20px;
-		border-radius: 5px;
-		background: var(--highlight);
-		margin-top: -5px;
-		cursor: pointer;
-		-webkit-appearance: none;
-	}
-	input[type='range']:focus::-webkit-slider-runnable-track {
-		background: var(--primary);
-	}
-	input[type='range']::-moz-range-track {
-		width: 100%;
-		height: 12px;
-		cursor: pointer;
-		background: var(--highlight);
-		border-radius: 4px;
-		border: 2px solid #f27b7f;
-	}
-	input[type='range']::-moz-range-thumb {
-		border: 2px solid #f27b7f;
-		height: 30px;
-		width: 30px;
-		border-radius: 0px;
-		cursor: pointer;
-	}
-	input[type='range']::-ms-track {
-		width: 100%;
-		height: 10px;
-		cursor: pointer;
-		background: transparent;
-		border-color: transparent;
-		color: transparent;
-	}
-	input[type='range']::-ms-fill-lower {
-		background: var(--secondary);
-		border: 2px solid #f27b7f;
-		border-radius: 8px;
-	}
-	input[type='range']::-ms-fill-upper {
-		background: #ff96ab;
-		border: 2px solid #f27b7f;
-		border-radius: 8px;
-	}
-	input[type='range']::-ms-thumb {
-		margin-top: 1px;
-		border: 2px solid #f27b7f;
-		height: 30px;
-		width: 30px;
-		border-radius: 0px;
-		cursor: pointer;
-	}
-	input[type='range']:focus::-ms-fill-lower {
-		background: #ff96ab;
-	}
-	input[type='range']:focus::-ms-fill-upper {
-		background: #ff96ab;
 	}
 </style>

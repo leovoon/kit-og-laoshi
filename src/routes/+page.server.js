@@ -12,10 +12,7 @@ export const load = ({ url, depends }) => {
 
 	if (!message || !author) {
 		return {
-			message: cny ? '恭喜发财' : '你今天分享了吗？',
-			cny,
-			selected,
-			author: 'by温老师'
+			message: cny ? '恭喜发财' : '你今天分享了吗？'
 		};
 	}
 
