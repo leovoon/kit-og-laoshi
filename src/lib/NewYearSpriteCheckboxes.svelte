@@ -22,13 +22,16 @@
 	style="display: flex;  justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap;"
 >
 	{#each options as { value, component }}
-		<label
-			><input style="width: 100%" type="radio" {value} bind:group />
+		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+		<div tabindex="0">
+			<label
+				><input style="width: 100%; height: inherit;" type="radio" {value} bind:group />
 
-			<span>
-				<svelte:component this={component} width="50" height="50" />
-			</span>
-		</label>
+				<span>
+					<svelte:component this={component} width="50" height="50" />
+				</span>
+			</label>
+		</div>
 	{/each}
 </div>
 

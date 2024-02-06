@@ -25,7 +25,7 @@
 	/>
 	<svg
 		class="tick"
-		style:inset={variant === 'small' ? '4px' : '2px'}
+		style:inset={variant === 'small' ? '4px' : '0'}
 		width={variant === 'small' ? '20' : '35'}
 		height={variant === 'small' ? '20' : '35'}
 		viewBox="0 0 1024 1024"

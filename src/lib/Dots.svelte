@@ -2,8 +2,6 @@
 	import colors from 'nice-color-palettes';
 	import seedrandom from 'seedrandom';
 	import NewYearSpriteGroupPath from './NewYearSpriteGroupPath.svelte';
-	import { queryParameters, ssp } from 'sveltekit-search-params';
-	import Checkbox from './Checkbox.svelte';
 
 	export let count = 20;
 	export let width = 1200;
